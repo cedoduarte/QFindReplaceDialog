@@ -172,7 +172,15 @@
 # permanent authorization for you to choose that version for the
 # Library.
 
-INCLUDEPATH += $$PWD/src
+QT += core gui widgets
 
-LIBS += -L$$PWD/lib
-LIBS += -lQFindReplaceDialog
+TEMPLATE = app
+
+include($$PWD/../qfindreplacedialog.pri)
+
+SOURCES += main.cpp \
+           mainwindow.cpp
+
+HEADERS += mainwindow.h
+
+FORMS += mainwindow.ui

@@ -1,3 +1,11 @@
+// ------------------------------------------------------------------------------
+// Copyright (C) 2009 -> Lorenzo Bettini
+//                       -> http://www.lorenzobettini.it
+// Copyright (C) 2022 -> Carlos Enrique Duarte Ortiz
+//                       -> https://www.youtube.com/c/duartecorporationtutoriales
+//                       -> carlosduarte.1@hotmail.com
+// ------------------------------------------------------------------------------
+
 //                 GNU LESSER GENERAL PUBLIC LICENSE
 //                     Version 3, 29 June 2007
 

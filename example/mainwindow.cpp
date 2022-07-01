@@ -172,37 +172,66 @@
 // permanent authorization for you to choose that version for the
 // Library.
 
-#include "qfindreplacedialog.h"
-#include "qfindreplacewidget.h"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
 
-#include <QTextEdit>
-#include <QVBoxLayout>
+#include <QMessageBox>
+#include <qfinddialog.h>
+#include <qfindreplacedialog.h>
 
-QFindReplaceDialog::QFindReplaceDialog(QWidget *parent)
-    : QDialog(parent)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
 {
-    m_widget = new QFindReplaceWidget(this);
-    m_vbox = new QVBoxLayout;
-    m_vbox->addWidget(m_widget);
-    setLayout(m_vbox);
+    ui->setupUi(this);
+    m_findDialog = new QFindDialog(this);
+    m_findDialog->setModal(false);
+    m_findDialog->setTextEdit(ui->textEdit);
+    m_findReplaceDialog = new QFindReplaceDialog(this);
+    m_findReplaceDialog->setModal(false);
+    m_findReplaceDialog->setTextEdit(ui->textEdit);
+    ui->textEdit->setText(
+            "Here's some text\nYou can use it to find\n"
+            "with the Find/Replace dialog\n"
+            "and do some tests. :)"
+            );
+
+    createActions();
 }
 
-QFindReplaceDialog::~QFindReplaceDialog()
+MainWindow::~MainWindow()
 {
-    // nothing to do here
+    delete ui;
 }
 
-void QFindReplaceDialog::setTextEdit(QTextEdit *textEdit)
+void MainWindow::createActions()
 {
-    m_widget->setTextEdit(textEdit);
+    connect(ui->actionFind, &QAction::triggered, this, &MainWindow::findDialog);
+    connect(ui->actionReplace, &QAction::triggered, this, &MainWindow::findReplaceDialog);
+    connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::about);
+    connect(ui->actionFindNext, &QAction::triggered, m_findDialog, &QFindDialog::findNext);
+    connect(ui->actionFindPrevious, &QAction::triggered, m_findDialog, &QFindDialog::findPrev);
+    connect(ui->actionAboutQt, &QAction::triggered, this, [&]()
+    {
+        QMessageBox::aboutQt(this, "Qt");
+    });
 }
 
-void QFindReplaceDialog::findNext()
+void MainWindow::about()
 {
-    m_widget->findNext();
+      QMessageBox::about(this, tr("About Find/Replace Example"),
+            tr("Simple application showing Find/Replace Dialog.<br><br>") +
+                + "Author: <a href=\"http://www.lorenzobettini.it\">Lorenzo Bettini</a><br><br>"
+                + "Author: <a href=\"https://www.youtube.com/c/duartecorporationtutoriales\">Carlos Enrique Duarte Ortiz</a><br><br>"
+    );
 }
 
-void QFindReplaceDialog::findPrev()
+void MainWindow::findDialog()
 {
-    m_widget->findPrev();
+    m_findDialog->show();
+}
+
+void MainWindow::findReplaceDialog()
+{
+    m_findReplaceDialog->show();
 }

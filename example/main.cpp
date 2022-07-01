@@ -172,37 +172,15 @@
 // permanent authorization for you to choose that version for the
 // Library.
 
-#include "qfindreplacedialog.h"
-#include "qfindreplacewidget.h"
+#include "mainwindow.h"
 
-#include <QTextEdit>
-#include <QVBoxLayout>
+#include <QApplication>
 
-QFindReplaceDialog::QFindReplaceDialog(QWidget *parent)
-    : QDialog(parent)
+int main(int argc, char *argv[])
 {
-    m_widget = new QFindReplaceWidget(this);
-    m_vbox = new QVBoxLayout;
-    m_vbox->addWidget(m_widget);
-    setLayout(m_vbox);
-}
-
-QFindReplaceDialog::~QFindReplaceDialog()
-{
-    // nothing to do here
-}
-
-void QFindReplaceDialog::setTextEdit(QTextEdit *textEdit)
-{
-    m_widget->setTextEdit(textEdit);
-}
-
-void QFindReplaceDialog::findNext()
-{
-    m_widget->findNext();
-}
-
-void QFindReplaceDialog::findPrev()
-{
-    m_widget->findPrev();
+    QApplication a(argc, argv);
+    a.setStyle("fusion");
+    MainWindow w;
+    w.show();
+    return a.exec();
 }

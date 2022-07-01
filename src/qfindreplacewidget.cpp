@@ -1,3 +1,11 @@
+// ------------------------------------------------------------------------------
+// Copyright (C) 2009 -> Lorenzo Bettini
+//                       -> http://www.lorenzobettini.it
+// Copyright (C) 2022 -> Carlos Enrique Duarte Ortiz
+//                       -> https://www.youtube.com/c/duartecorporationtutoriales
+//                       -> carlosduarte.1@hotmail.com
+// ------------------------------------------------------------------------------
+
 //                 GNU LESSER GENERAL PUBLIC LICENSE
 //                     Version 3, 29 June 2007
 
@@ -171,12 +179,14 @@
 #include <QTextEdit>
 #include <QRegularExpression>
 
-QFindReplaceWidget::QFindReplaceWidget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::QFindReplaceWidget)
+QFindReplaceWidget::QFindReplaceWidget(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::QFindReplaceWidget)
 {
     ui->setupUi(this);
-    m_textEdit = nullptr;
+    m_textEdit = nullptr;    
+    ui->errorLabel->setText("");
+    connectSlots();
 }
 
 QFindReplaceWidget::~QFindReplaceWidget()
@@ -343,4 +353,15 @@ void QFindReplaceWidget::regexpSelected(bool sel)
     {
         validateRegExp("");
     }
+}
+
+void QFindReplaceWidget::connectSlots()
+{
+    connect(ui->textToFind, &QLineEdit::textChanged, this, &QFindReplaceWidget::textToFindChanged);
+    connect(ui->textToFind, &QLineEdit::textChanged, this, &QFindReplaceWidget::validateRegExp);
+    connect(ui->regexCheckBox, &QCheckBox::toggled, this, &QFindReplaceWidget::regexpSelected);
+    connect(ui->findButton, &QPushButton::clicked, this, [&]() { find(); });
+    connect(ui->closeButton, &QPushButton::clicked, parentWidget(), &QWidget::close);
+    connect(ui->replaceButton, &QPushButton::clicked, this, &QFindReplaceWidget::replace);
+    connect(ui->replaceAllButton, &QPushButton::clicked, this, &QFindReplaceWidget::replaceAll);
 }
